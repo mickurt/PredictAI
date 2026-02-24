@@ -1,0 +1,20 @@
+# Python
+backend/venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+
+# Base de données locale
+*.db
+*.sqlite3
+
+# Node.js (Frontend)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+*.log
+
+# Variables d'environnement / Sécurité
+.env
+.env.local
+.DS_Store
