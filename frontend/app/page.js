@@ -33,13 +33,15 @@ export default function Dashboard() {
         return `https://www.google.com/finance/quote/${asset}`;
     };
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
     const fetchData = async () => {
         try {
             const [statusRes, historyRes, txRes, settingsRes] = await Promise.all([
-                fetch('http://localhost:8000/api/status'),
-                fetch('http://localhost:8000/api/history'),
-                fetch('http://localhost:8000/api/transactions'),
-                fetch('http://localhost:8000/api/settings')
+                fetch(`${API_URL}/api/status`),
+                fetch(`${API_URL}/api/history`),
+                fetch(`${API_URL}/api/transactions`),
+                fetch(`${API_URL}/api/settings`)
             ]);
 
             const s = await statusRes.json();
@@ -65,7 +67,7 @@ export default function Dashboard() {
         const newSettings = { ...settings, [key]: !settings[key] };
         setSettings(newSettings);
         try {
-            await fetch('http://localhost:8000/api/settings', {
+            await fetch(`${API_URL}/api/settings`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ [key]: newSettings[key] })
@@ -78,7 +80,7 @@ export default function Dashboard() {
     const handleManualRun = async () => {
         setLoading(true);
         try {
-            await fetch('http://localhost:8000/api/run', { method: 'POST' });
+            await fetch(`${API_URL}/api/run`, { method: 'POST' });
             await new Promise(r => setTimeout(r, 1000)); // Fake delay for UX
             await fetchData();
         } finally {
@@ -90,7 +92,7 @@ export default function Dashboard() {
         if (!confirm("⚠️ WARNING: This will delete all transaction history and reset your balance to $100. Are you sure?")) return;
         setLoading(true);
         try {
-            await fetch('http://localhost:8000/api/reset', { method: 'POST' });
+            await fetch(`${API_URL}/api/reset`, { method: 'POST' });
             await new Promise(r => setTimeout(r, 1000));
             // Reset local state to show clean slate immediately
             setStatus(null);
@@ -108,7 +110,7 @@ export default function Dashboard() {
     const handleDeposit = async () => {
         setLoading(true);
         try {
-            await fetch('http://localhost:8000/api/deposit', { method: 'POST' });
+            await fetch(`${API_URL}/api/deposit`, { method: 'POST' });
             await new Promise(r => setTimeout(r, 500));
             await fetchData();
         } catch (e) {

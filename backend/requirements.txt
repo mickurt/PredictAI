@@ -5,7 +5,7 @@ httpx
 schedule
 pandas
 numpy
-db-sqlite3
 python-multipart
-# AI library integration if needed (e.g. google-generativeai for direct Gemini use)
 google-generativeai
+yfinance
+supabase
