@@ -33,7 +33,11 @@ export default function Dashboard() {
         return `https://www.google.com/finance/quote/${asset}`;
     };
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    // Default to the Render backend in production safely without env variables
+    const API_URL = process.env.NEXT_PUBLIC_API_URL ||
+        (process.env.NODE_ENV === 'production'
+            ? 'https://predictai-backend-3y46.onrender.com'
+            : 'http://localhost:8000');
 
     const fetchData = async () => {
         try {
